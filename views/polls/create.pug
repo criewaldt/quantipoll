@@ -1,0 +1,15 @@
+html
+    head
+        title= QuantiPoll
+    body
+        h1 Create Poll
+        form(action="/poll/create" method="POST")
+            p What's the question?
+            input(type="text" name="question" value="")
+            p What are the answers?
+            input(type="text" name="1" value="")
+            input(type="text" name="2" value="")
+            input(type="text" name="3" value="")
+            input(type="text" name="4" value="")
+            input(type="submit" value="Submit")
+        

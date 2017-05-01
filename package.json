@@ -1,0 +1,43 @@
+{
+  "name": "QuantiPoll",
+  "version": "1.0.0",
+  "description": "A way to ask questions and get answers.",
+  "main": " app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/criewaldt/quantipoll.git"
+  },
+  "keywords": [
+    "Node",
+    "Express",
+    "SocketIO",
+    "Postgres",
+    "Redis",
+    "Pug",
+    "Heroku",
+    "Heroku-Redis"
+  ],
+  "author": "Chris Riewaldt",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/criewaldt/quantipoll/issues"
+  },
+  "homepage": "",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "connect-redis": "^3.2.0",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.15.2",
+    "express-session": "^1.15.1",
+    "lodash": "^4.17.4",
+    "passport": "^0.3.2",
+    "passport-google-oauth": "^1.0.0",
+    "pg": "^6.1.4",
+    "pug": "^2.0.0-beta11",
+    "sequelize": "^3.30.3",
+    "socket.io": "^1.7.3"
+  }
+}
