@@ -1,0 +1,28 @@
+html(lang="en")
+    head
+        title Bootstrap Example
+        meta(charset="utf-8")
+        meta(name="viewport" content="width=device-width, initial-scale=1")
+        link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css")
+        script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js")
+        script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js")
+    body
+        .jumbotron.text-center
+            h1 Polls
+            p View and vote on polls
+        .container
+            .row.text-center
+                .col-sm-4
+                    h3 #
+                .col-sm-4
+                    h3 Question
+                .col-sm-4
+                    h3 User
+            each poll in polls
+                .row.text-center
+                    .col-sm-4
+                            p= poll.id
+                    .col-sm-4
+                            a(href="/polls/"+poll.id)= poll.question
+                    .col-sm-4
+                            a(href="/user/"+poll.userid)= poll.userid

@@ -8,6 +8,8 @@ var express = require('express'),
 router.use('/api/poll', require('./api/polls'));
 router.use('/api/vote', require('./api/votes'));
 
+router.use('/polls', require('./polls'));
+
 var log = function(inst) {
     console.dir(inst.get());
 };
@@ -29,6 +31,7 @@ router.get('/auth/google/callback',
 router.get('/', function(req, res) {
   res.render('index');
 });
+
 
 // restricted view
 router.get('/restricted', restricted, function(req, res) {
