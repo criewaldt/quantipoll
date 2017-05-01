@@ -1,7 +1,12 @@
 //Google OAuth2
 var passport = require('passport');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-var config = require('../local/config.js');
+try {
+    var config = require('../local/config.js');
+} catch (err) {
+    console.log(err);
+    var config = {};
+}
 passport.use(new GoogleStrategy({
     realm: config.google.realm,
     clientID: config.GOOGLE_CONSUMER_KEY,
