@@ -1,7 +1,7 @@
 {
   "name": "QuantiPoll",
   "version": "1.0.0",
-  "description": "A way to ask questions and get answers.",
+  "description": "A place for questions and answers.",
   "main": " app.js",
   "scripts": {
     "start": "node app.js"

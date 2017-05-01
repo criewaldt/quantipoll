@@ -1,3 +1,5 @@
+
+
 Poll.sync().then(function() {
   var data = {
       question: "Whats your favorite color?",

@@ -1,8 +1,12 @@
-var Sequelize = require('sequelize'),
-  config = require('../local/config.js');
+var Sequelize = require('sequelize');
+try {
+  var config = require('../local/config.js');
+} catch (err) {
+  var config = {};
+}
 // sequelize initialization
 
-var sequelize = new Sequelize(config.PGURI, {
+var sequelize = new Sequelize(process.env.PGURI || config.PGURI, {
   dialect: 'postgres',
   dialectOptions: {
     ssl: true
@@ -82,7 +86,16 @@ var Vote = sequelize.define('Vote', {
   }
 });
 
-//require('./seed.js');
+
+Poll.sync().then(function() {
+  //sync the db
+});
+User.sync().then(function() {
+  //sync the db
+});
+Vote.sync().then(function() {
+  //sync the db
+});
 
 
 module.exports = {
