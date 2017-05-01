@@ -8,10 +8,10 @@ try {
     var config = {};
 }
 passport.use(new GoogleStrategy({
-    realm: config.google.realm,
-    clientID: config.GOOGLE_CONSUMER_KEY,
-    clientSecret: config.GOOGLE_CONSUMER_SECRET,
-    callbackURL: config.google.callbackURL,
+    realm: process.env.google_realm || config.google.realm,
+    clientID: process.env.GOOGLE_CONSUMER_KEY || config.GOOGLE_CONSUMER_KEY,
+    clientSecret: process.env.GOOGLE_CONSUMER_SECRET || config.GOOGLE_CONSUMER_SECRET,
+    callbackURL: process.env.google_callbackURL || config.google.callbackURL,
   },
     function(token, tokenSecret, profile, done) {
         process.nextTick(function() {
