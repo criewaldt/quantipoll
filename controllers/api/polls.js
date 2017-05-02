@@ -6,9 +6,9 @@ var log = function(inst) {
 };
 router.post('/', function(req, res) {
     var data = {
-        question: req.body.question,
-        answers: req.body.answers,
-        userid: req.body.userid
+        question: "What is a test question?",
+        answers: {1:'answer 1', 2:'answer 2', 3:'answer 3'},
+        userid: "testUser"
     };
     Poll.create(data)
       .then(function(poll) {

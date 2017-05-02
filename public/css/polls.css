@@ -1,0 +1,7 @@
+//polls.css
+
+.balign {
+    display:inline-block !important;
+    vertical-align: bottom;
+    float: none;
+}

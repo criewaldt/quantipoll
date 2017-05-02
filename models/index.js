@@ -30,19 +30,19 @@ var Poll = sequelize.define('Poll', {
   question: {
     type:Sequelize.TEXT,
     validate: {
-      notNull: true
+      //notNull: true
     }
   },
   answers: {
     type: Sequelize.JSONB,
     validate: {
-      notNull: true
+      //notNull: true
     }
   },
   userid: {
     type: Sequelize.STRING,
     validate: {
-      notNull: true
+      //notNull: true
     }
   }
 });
@@ -69,19 +69,19 @@ var Vote = sequelize.define('Vote', {
   pollid: {
     type:Sequelize.INTEGER,
     validate: {
-      notNull: true
+      //notNull: true
     }
   },
   userid: {
     type: Sequelize.STRING,
     validate: {
-      notNull: true
+      //notNull: true
     }
   },
   vote: {
     type: Sequelize.INTEGER,
     validate: {
-      notNull: true
+      //notNull: true
     }
   }
 });

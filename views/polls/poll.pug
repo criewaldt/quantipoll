@@ -8,15 +8,22 @@ html(lang="en")
         script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js")
     body
         .jumbotron.text-center
-            h1 Poll
-            p View and vote on polls
+            h1 Poll #
+                span= poll.id
+            p Created by: 
+                a(href="")= poll.userid
         .container
             .row.text-center
                 .col-sm-12
-                    h3= poll.question
+                    h3 Question: 
+                        span= poll.question
+                br
             each answer in poll.answers
-                .row.text-center
-                    .col-sm-12
-                        button.btn.btn-lg= answer
+                .row.text-center.well
+                    .col-sm-6
+                        span= answer
                         br
                         br
+                    .col
+                    .col
+                        button.btn.btn-sm Vote 
