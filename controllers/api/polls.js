@@ -22,7 +22,7 @@ router.post('/', function(req, res) {
 
 router.get('/create/:userid', function(req, res) {
     var data = {
-        userid: "Anonymous"
+        userid: req.params.userid
     };
     //create poll and return json of poll data
     Poll.create(data)
