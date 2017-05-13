@@ -7,12 +7,32 @@ var log = function(inst) {
     console.dir(inst.get());
 };
 
+//shuffle the answer array to mix order of answers on voting page
+function shuffle(array) {
+  var currentIndex = array.length, temporaryValue, randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}
+
 function createPoll(callback) {
     // Set the headers
     
     // Configure the request
     var options = {
-        url: 'http://www.quantipoll.com/api/poll/create',
+        url: 'http://localhost:3000/api/poll/create',
         method: 'GET'
     };
     
@@ -58,7 +78,8 @@ router.post('/save', function(req, res) {
     
     var answers = {};
     var counter = 0;
-    req.body.answers.forEach(function(item){
+    var answerArray = shuffle(req.body.answers);
+    answerArray.forEach(function(item){
             answers[counter] = item;
             counter ++;
         });

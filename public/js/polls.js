@@ -1,4 +1,4 @@
 //polls.js
-function createPoll() {
-    $.post( "/api/poll", {} );
-}
+$(document).ready(function() {
+   //
+});

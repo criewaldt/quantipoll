@@ -13,17 +13,29 @@ html(lang="en")
             p Created by: 
                 a(href="")= poll.userid
         .container
-            .row.text-center
-                .col-sm-12
-                    h3 Question: 
-                        span= poll.question
+            .row
+                .col-sm-10.col-md-offset-1
+                    h3 Question
+                    .well.text-center
+                        h4
+                            strong= poll.question
                 br
-            each answer in poll.answers
-                .row.text-center.well
-                    .col-sm-6
-                        span= answer
-                        br
-                        br
-                    .col
-                    .col
-                        button.btn.btn-primary Vote 
+            .row
+                .col-sm-10.col-md-offset-1
+                    h3 Answer Options
+                    each answer in poll.answers
+                        .row.well
+                            .col-sm-8.text-center
+                                h4= answer
+                            .col-sm-4.text-left
+                                div(class="input-group")
+                                    button(class="btn btn-info" type="button") Cast vote
+            .row.text-center
+                .col-sm-6
+                    h3
+                        a(href="/polls") View the Polls
+                    p View and vote on recent polls
+                .col-sm-6
+                    h3
+                        a(href="/me") Vote History
+                    p View your vote history
