@@ -4,7 +4,7 @@ function savePoll(payload, callback) {
        
        $.ajax({
         type: "POST",
-        url: 'https://www.quantipoll.com/polls/save',
+        url: 'https://quantipoll.herokuapp.com/polls/save',
         data: payload,
         success: function(data){
                      callback(data);
