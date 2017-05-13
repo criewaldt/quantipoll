@@ -21,14 +21,20 @@ function savePoll(payload, callback) {
     app.controller('myAnswers', function($scope) {
         $scope.answers = [];
         $scope.counter = 1;
+        $scope.myAnswer = "";
+        $scope.myQuestion = "";
         $scope.addAnswer = function() {
             //
-            $scope.answers.push({id:$scope.counter,answer:$scope.myAnswer});
-            $scope.answers.forEach(function (item, index){
-                    item.id = index + 1;
-                });
-            $scope.counter ++;
-            $scope.myAnswer = "";
+            if ($scope.myAnswer.length >= 1) {
+              $scope.answers.push({id:$scope.counter,answer:$scope.myAnswer});
+              $scope.answers.forEach(function (item, index){
+                      item.id = index + 1;
+                  });
+              $scope.counter ++;
+              $scope.myAnswer = "";
+            } else {
+              alert("Answer cannot be empty");
+            }
         };
         $scope.removeItem = function(x) {
             $scope.answers.splice(x, 1);
@@ -37,40 +43,41 @@ function savePoll(payload, callback) {
                 });
         };
         $scope.createPoll = function() {
-            //send rest request to api to save poll data
-            //alert(document.getElementsByName('username')[0].value);
-            //alert(document.getElementsByName('pollid')[0].value);
-            var myPoll = {};
-            myPoll.userid = document.getElementsByName('username')[0].value;
-            myPoll.id = document.getElementsByName('pollid')[0].value;
-            myPoll.answers = {};
-            
-            $scope.answers.forEach(function(item, index) {
-                    var i = (index+1).toString();
-                    myPoll.answers[i] = item.answer;
+            if ($scope.myQuestion.length >= 1 && $scope.answers.length >= 2) {
+              var myPoll = {};
+              myPoll.userid = document.getElementsByName('username')[0].value;
+              myPoll.id = document.getElementsByName('pollid')[0].value;
+              myPoll.answers = {};
+              
+              $scope.answers.forEach(function(item, index) {
+                      var i = (index+1).toString();
+                      myPoll.answers[i] = item.answer;
+                  });
+              myPoll.question = $scope.myQuestion;
+              
+              myPoll.isanon = document.getElementsByName('isanon')[0].checked;
+              
+              savePoll(myPoll, function(result){
+                console.log("http://www.quantipoll.com/polls/"+result.link);
+                       window.location.replace("http://www.quantipoll.com/polls/"+result.link);
                 });
-            myPoll.question = $scope.myQuestion;
-            //console.log(myPoll);
-            savePoll(myPoll, function(result){
-              console.log("http://www.quantipoll.com/polls/"+result.link);
-                     window.location.replace("http://www.quantipoll.com/polls/"+result.link);
-              });
+            } else {
+              //
+              alert('The poll must have a question and at least two answer options... Try again.');
+            }
         };
         
         
     });
 </script>
 <div ng-repeat="answer in answers">
-    <div class="row text-center">
-        <div class="col-sm-2 text-right">
-            <strong>{{ answer.id }}</strong>
+    <div class="row">
+        <div class="col-sm-12 text-center">
+            <strong>{{ answer.id }} - {{ answer.answer }} 
+               <button ng-click="removeItem($index)"> &times;</button>
+               <br>
+               <br>
+             </strong>
         </div>
-        <div class="col-sm-8 text-center">
-            <strong>{{ answer.answer }}</strong>
-        </div>
-        <div class="col-sm-2 text-center">
-            <button ng-click="removeItem($index)">&times;</button>
-        </div>
-        <hr>
     </div>
 </div> 

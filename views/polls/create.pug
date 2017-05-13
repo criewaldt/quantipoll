@@ -7,8 +7,11 @@ html(lang="en")
         script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js")
         script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js")
         
+        //angular
         script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js")
-        
+        //bootstrap toggle
+        link(href='https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css', rel='stylesheet')
+        script(src='https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js')
     body
     
         //angular createAnswers
@@ -16,7 +19,7 @@ html(lang="en")
             .jumbotron.text-center
                 h1 Create A Poll 
             .container
-                .row
+                .row.container-fluid
                     .col-sm-12
                         p Poll ID: #{poll.id} created by: 
                             a(href="/user/"+poll.userid)= poll.userid
@@ -25,27 +28,44 @@ html(lang="en")
                     .col-sm-10.col-md-offset-1
                         h3 Question
                         .well.text-center
-                            input(type="text" class="form-control" ng-model="myQuestion" placeholder="What is your poll question?")
+                            textarea(id="myQuestion" class="form-control" ng-model="myQuestion" placeholder="What is your poll question?")
                 .row
                     .col-sm-10.col-md-offset-1
-                        h3 Answers
-                        .well.text-center
+                        h3 Answer Options
+                        .well
                             include angularAnswers.html
-                            well
+                            well.text-center
                                 .row
                                     .col-sm-10.col-md-offset-1
                                         h4 Add an answer
                                         div(class="input-group")
                                             span(class="input-group-btn")
-                                                input(type="text" ng-model="myAnswer" class="form-control" placeholder="...answer")
+                                                input(type="text", ng-model="myAnswer", class="form-control", placeholder="...answer")
                                                 input(type="text", name="username", class="hidden", value=""+poll.userid)
                                                 input(type="text", name="pollid", class="hidden", value=""+poll.id)
                                         
-                            br
-                            div(class="input-group")
-                                span(class="input-group-btn")
-                                    button(class="btn btn-info" type="button" ng-click="addAnswer()") Add Answer
+                                br
+                                div(class="input-group")
+                                    span(class="input-group-btn")
+                                        button(class="btn btn-info" type="button" ng-click="addAnswer()") Add Answer
                         
-                        button(class="btn btn-success" type="button" ng-click="createPoll()") Create Poll
-            
+                row
+                    .col-sm-10.col-md-offset-1
+                        h3 Settings 
+                        .row.well.text-center
+                            label.checkbox-inline
+                                input(type='checkbox', name="isanon", checked=false, data-toggle='toggle')
+                                |  Anonymous Mode
+                            .row
+                                br
+                                button(class="btn btn-success" type="button" ng-click="createPoll()") Create Poll
+                .row.text-center
+                    .col-sm-6
+                        h3
+                            a(href="/polls") View the Polls
+                        p View and vote on recent polls
+                    .col-sm-6
+                        h3
+                            a(href="/me") Vote History
+                        p View your vote history
             

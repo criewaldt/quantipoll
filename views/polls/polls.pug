@@ -12,23 +12,26 @@ html(lang="en")
     body
         .jumbotron.text-center
             h1 Polls
-            p View and vote on polls
+            p View and vote on polls, or create your own.
         .container
-            .row.text-center
-                .col-sm-6
-                    a.btn.btn-primary.btn-lg(href="/polls/create") Create a poll
-                .col-sm-6.align-bottom
+            .row.text-left
+                .col-sm-6.text-center
                     div(class="input-group")
-                        input(type="text" class="form-control" placeholder="Search by keyword...")
+                        input(type="text" class="form-control" disabled="disabled" placeholder="Search by keyword...")
                         span(class="input-group-btn")
-                            button(class="btn btn-default" type="button") Go 
+                            button(class="btn btn-default" disabled="disabled" type="button") Go
+                br
+                .col-sm-6.text-center
+                    a.btn.btn-primary.btn-lg(href="/polls/create/testUser12345") Create a poll
             .row.text-center
                 h2 Recent Polls
             each poll in polls
                 .well.well-sm
                     .row.text-center
                         .col-sm-8
-                            a(href="/polls/"+poll.id)= poll.question
+                            strong
+                                a(href="/polls/"+poll.id)= poll.question
+                        br
                         .col-sm-4
                             p Created by: 
                                 a(href="/user/"+poll.userid)= poll.userid

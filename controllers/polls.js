@@ -27,12 +27,12 @@ function shuffle(array) {
   return array;
 }
 
-function createPoll(callback) {
+function createPoll(userID, callback) {
     // Set the headers
     
     // Configure the request
     var options = {
-        url: 'http://www.quantipoll.com/api/poll/create',
+        url: 'http://localhost:3000/api/poll/create/'+userID,
         method: 'GET'
     };
     
@@ -48,6 +48,18 @@ function createPoll(callback) {
     });  
 }
 
+function cleanUp(poll) {
+    //
+    Poll.destroy({
+        where: {
+            id: poll.id,
+            userid: poll.userid
+        }
+    }).catch(function (err) {
+        console.log(err);
+        });
+}
+
 router.get('/', function(req, res) {
     //do something
     Poll.findAll({
@@ -58,7 +70,7 @@ router.get('/', function(req, res) {
             }
         }
     }).then(function(polls) {
-        polls.forEach(log);
+        //polls.forEach(log);
         res.render('polls/polls', {polls:polls});
     }).catch(function (err) {
         console.log(err);
@@ -66,9 +78,9 @@ router.get('/', function(req, res) {
         });
 });
 
-router.get('/create', function(req, res) {
+router.get('/create/:userid', function(req, res) {
     //do something
-    createPoll(function(result) {
+    createPoll(req.params.userid, function(result) {
             res.render('polls/create', {poll:result, answers:[{id:1, answer:" "}]});
         });
     
@@ -83,17 +95,22 @@ router.post('/save', function(req, res) {
             answers[counter] = item;
             counter ++;
         });
-    //console.log(data);
+    
+    var author = 'Anonymous';
+    if (req.body.isanon == "false") {
+        author = req.body.userid;
+    }
+    
     //do something
     var data = {
         id: parseInt(req.body.id),
-        userid: req.body.userid,
+        userid: author,
         question: req.body.question,
         answers: answers
     };
     Poll
         .update({
-            userid: req.body.userid,
+            userid: author,
             question: req.body.question,
             answers: answers
           }, {
@@ -102,24 +119,46 @@ router.post('/save', function(req, res) {
             plain: true
           })
           .then(function (result) {
-                res.json({"link":result[1].id});   
-            // result = [x] or [x, y]
-            // [x] if you're not using Postgres
-            // [x, y] if you are using Postgres
+                
+                res.json({"link":result[1].id});
+                Poll.findAll({
+                    where: {
+                        question: {
+                                $eq: null
+                            },
+                        userid: {
+                            $eq: author
+                        }
+                        }
+                    })
+                .then(function(results) {
+                    results.forEach(function(result){
+                            cleanUp(result);
+                        });
+                    console.log('Empty poll cleanup: done.');
+                }).catch(function (err) {
+                    console.log(err);
+                    
+        });
+            
           });
+    
     
 });
 
 router.get('/:pollid', function(req, res) {
     //do something
-    console.log(req.params.pollid);
     Poll.findOne({
         where: {id:req.params.pollid}
     }).then(function(poll) {
-        res.render('polls/poll', {poll:poll});
+        if (poll !== null) {
+            res.render('polls/poll', {poll:poll});
+        } else {
+            res.redirect('/polls');
+        }
     }).catch(function (err) {
         console.log(err);
-        res.send('error');
+        res.redirect('/polls');
         });
 });
 // Define routes handling profile requests

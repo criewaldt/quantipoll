@@ -20,9 +20,9 @@ router.post('/', function(req, res) {
     });
 });
 
-router.get('/create', function(req, res) {
+router.get('/create/:userid', function(req, res) {
     var data = {
-        userid: "testUser"
+        userid: req.params.userid
     };
     //create poll and return json of poll data
     Poll.create(data)
@@ -42,7 +42,7 @@ router.get('/', function(req, res) {
         attributes: ['userid', 'question', 'answers'],
         order: '"createdAt" DESC'
     }).then(function(polls) {
-        polls.forEach(log);
+        //polls.forEach(log);
         res.json(polls);
     }).catch(function (err) {
         console.log(err);

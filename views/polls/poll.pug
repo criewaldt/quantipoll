@@ -23,13 +23,15 @@ html(lang="en")
             .row
                 .col-sm-10.col-md-offset-1
                     h3 Answer Options
-                    each answer in poll.answers
-                        .row.well
-                            .col-sm-8.text-center
-                                h4= answer
-                            .col-sm-4.text-left
-                                div(class="input-group")
-                                    button(class="btn btn-info" type="button") Cast vote
+                    .col-sm-12
+                        each answer in poll.answers
+                            .row.well
+                                .col-sm-6.text-center
+                                    h4
+                                        strong= answer
+                                .col-sm-6.text-center    
+                                    button(class="btn btn-info" id=answer type="button") Cast vote
+                                
             .row.text-center
                 .col-sm-6
                     h3
