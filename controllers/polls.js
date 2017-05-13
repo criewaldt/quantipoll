@@ -32,7 +32,7 @@ function createPoll(userID, callback) {
     
     // Configure the request
     var options = {
-        url: 'http://www.quantipoll.com/api/poll/create/'+userID,
+        url: 'https://www.quantipoll.com/api/poll/create/'+userID,
         method: 'GET'
     };
     
