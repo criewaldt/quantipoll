@@ -4,7 +4,7 @@ function savePoll(payload, callback) {
        
        $.ajax({
         type: "POST",
-        url: 'http://localhost/polls/save',
+        url: 'http://www.quantipoll.com/polls/save',
         data: payload,
         success: function(data){
                      callback(data);
@@ -51,8 +51,8 @@ function savePoll(payload, callback) {
             myPoll.question = $scope.myQuestion;
             //console.log(myPoll);
             savePoll(myPoll, function(result){
-              console.log("http://localhost/polls/"+result.link);
-                     window.location.replace("http://localhost/polls/"+result.link);
+              console.log("http://www.quantipoll.com/polls/"+result.link);
+                     window.location.replace("http://www.quantipoll.com/polls/"+result.link);
               });
         };
         

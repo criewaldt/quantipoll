@@ -12,7 +12,7 @@ function createPoll(callback) {
     
     // Configure the request
     var options = {
-        url: 'http://localhost/api/poll/create',
+        url: 'http://www.quantipoll.com/api/poll/create',
         method: 'GET'
     };
     
