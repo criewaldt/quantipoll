@@ -9,7 +9,6 @@ html(lang="en")
         
         //polls.js
         script(src="js/polls.js")
-        link(rel="stylesheet" href="css/polls.css")
     body
         .jumbotron.text-center
             h1 Polls
@@ -17,7 +16,7 @@ html(lang="en")
         .container
             .row.text-center
                 .col-sm-6
-                    a.btn.btn-primary.btn-lg(onclick="createPoll()") Create a poll
+                    a.btn.btn-primary.btn-lg(href="/polls/create") Create a poll
                 .col-sm-6.align-bottom
                     div(class="input-group")
                         input(type="text" class="form-control" placeholder="Search by keyword...")

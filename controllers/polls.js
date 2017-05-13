@@ -1,14 +1,42 @@
 var express = require('express'),
   router = express.Router(),
-  Poll = require('../models/index').Poll;
+  Poll = require('../models/index').Poll,
+  request = require('request');
+  
 var log = function(inst) {
     console.dir(inst.get());
 };
 
+function createPoll(callback) {
+    // Set the headers
+    
+    // Configure the request
+    var options = {
+        url: 'http://localhost:3000/api/poll/create',
+        method: 'GET'
+    };
+    
+    // Start the request
+    request(options, function (error, response) {
+        if (!error && response.statusCode == 200) {
+            // Print out the response body
+            callback(JSON.parse(response.body));
+        }
+        else {
+            console.log(error);
+        }
+    });  
+}
+
 router.get('/', function(req, res) {
     //do something
     Poll.findAll({
-        order: '"createdAt" DESC'
+        order: '"createdAt" DESC',
+        where: {
+            question: {
+              $ne: null
+            }
+        }
     }).then(function(polls) {
         polls.forEach(log);
         res.render('polls/polls', {polls:polls});
@@ -16,6 +44,49 @@ router.get('/', function(req, res) {
         console.log(err);
         res.send('error');
         });
+});
+
+router.get('/create', function(req, res) {
+    //do something
+    createPoll(function(result) {
+            res.render('polls/create', {poll:result, answers:[{id:1, answer:" "}]});
+        });
+    
+});
+
+router.post('/save', function(req, res) {
+    
+    var answers = {};
+    var counter = 0;
+    req.body.answers.forEach(function(item){
+            answers[counter] = item;
+            counter ++;
+        });
+    //console.log(data);
+    //do something
+    var data = {
+        id: parseInt(req.body.id),
+        userid: req.body.userid,
+        question: req.body.question,
+        answers: answers
+    };
+    Poll
+        .update({
+            userid: req.body.userid,
+            question: req.body.question,
+            answers: answers
+          }, {
+            where: { id: parseInt(req.body.id) },
+            returning: true,
+            plain: true
+          })
+          .then(function (result) {
+                res.json({"link":result[1].id});   
+            // result = [x] or [x, y]
+            // [x] if you're not using Postgres
+            // [x, y] if you are using Postgres
+          });
+    
 });
 
 router.get('/:pollid', function(req, res) {

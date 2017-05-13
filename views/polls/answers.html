@@ -1,0 +1,25 @@
+
+
+<div ng-app="createPollAnswers" ng-controller="myAnswers"> 
+
+<table>
+  <tr ng-repeat="answer in answers">
+    <td>{{ answer.id }}</td>
+    <td>{{ answer.answer }}</td>
+  </tr>
+</table>
+
+</div>
+
+<script>
+var app = angular.module('createPollAnswers', []);
+app.controller('myAnswers', function($scope, $http) {
+    $scope.answers = [];
+    $scope.counter = 1;
+    $scope.addAnswer = function() {
+      
+      $scope.answers.push({id:$scope.counter,answer:ANSWER});
+      $scope.counter++;
+    }
+});
+</script>

@@ -19,6 +19,23 @@ router.post('/', function(req, res) {
         res.send('error');
     });
 });
+
+router.get('/create', function(req, res) {
+    var data = {
+        userid: "testUser"
+    };
+    //create poll and return json of poll data
+    Poll.create(data)
+      .then(function(poll) {
+        res.json(poll.get());
+    }).catch(function (err) {
+        // handle error;
+        console.log(err);
+        res.send('error');
+    });
+    
+});
+
 router.get('/', function(req, res) {
     //do something
     Poll.findAll({

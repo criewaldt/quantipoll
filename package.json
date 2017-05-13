@@ -37,6 +37,8 @@
     "passport-google-oauth": "^1.0.0",
     "pg": "^6.1.4",
     "pug": "^2.0.0-beta11",
+    "request": "^2.81.0",
+    "requests": "^0.1.7",
     "sequelize": "^3.30.3",
     "socket.io": "^1.7.3"
   }

@@ -1,15 +1,51 @@
-html
+html(lang="en")
     head
-        title= QuantiPoll
-    body
-        h1 Create Poll
-        form(action="/poll/create" method="POST")
-            p What's the question?
-            input(type="text" name="question" value="")
-            p What are the answers?
-            input(type="text" name="1" value="")
-            input(type="text" name="2" value="")
-            input(type="text" name="3" value="")
-            input(type="text" name="4" value="")
-            input(type="submit" value="Submit")
+        title Create A Poll
+        meta(charset="utf-8")
+        meta(name="viewport" content="width=device-width, initial-scale=1")
+        link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css")
+        script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js")
+        script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js")
         
+        script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js")
+        
+    body
+    
+        //angular createAnswers
+        div(ng-app="createPollAnswers" ng-controller="myAnswers")
+            .jumbotron.text-center
+                h1 Create A Poll 
+            .container
+                .row
+                    .col-sm-12
+                        p Poll ID: #{poll.id} created by: 
+                            a(href="/user/"+poll.userid)= poll.userid
+                        
+                .row
+                    .col-sm-10.col-md-offset-1
+                        h3 Question
+                        .well.text-center
+                            input(type="text" class="form-control" ng-model="myQuestion" placeholder="What is your poll question?")
+                .row
+                    .col-sm-10.col-md-offset-1
+                        h3 Answers
+                        .well.text-center
+                            include angularAnswers.html
+                            well
+                                .row
+                                    .col-sm-10.col-md-offset-1
+                                        h4 Add an answer
+                                        div(class="input-group")
+                                            span(class="input-group-btn")
+                                                input(type="text" ng-model="myAnswer" class="form-control" placeholder="...answer")
+                                                input(type="text", name="username", class="hidden", value=""+poll.userid)
+                                                input(type="text", name="pollid", class="hidden", value=""+poll.id)
+                                        
+                            br
+                            div(class="input-group")
+                                span(class="input-group-btn")
+                                    button(class="btn btn-info" type="button" ng-click="addAnswer()") Add Answer
+                        
+                        button(class="btn btn-success" type="button" ng-click="createPoll()") Create Poll
+            
+            

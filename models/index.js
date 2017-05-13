@@ -86,7 +86,7 @@ var Vote = sequelize.define('Vote', {
   }
 });
 
-
+/*
 Poll.sync().then(function() {
   //sync the db
 });
@@ -96,7 +96,7 @@ User.sync().then(function() {
 Vote.sync().then(function() {
   //sync the db
 });
-
+*/
 
 module.exports = {
     Vote: Vote,
