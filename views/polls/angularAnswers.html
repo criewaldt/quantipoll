@@ -59,7 +59,7 @@ function savePoll(payload, callback) {
               
               savePoll(myPoll, function(result){
                 console.log("https://www.quantipoll.com/polls/"+result.link);
-                       window.location.replace("http://www.quantipoll.com/polls/"+result.link);
+                       window.location.replace("https://quantipoll.herokuapp.com/polls/"+result.link);
                 });
             } else {
               //
