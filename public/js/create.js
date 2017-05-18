@@ -1,7 +1,7 @@
 function savePoll(payload, callback) {
        $.ajax({
         type: "POST",
-        url: 'http://localhost:3000/polls/create',
+        url: 'https://quantipoll.herokuapp.com/polls/create',
         data: payload,
         success: function(response) {
               // similar behavior as an HTTP redirect
