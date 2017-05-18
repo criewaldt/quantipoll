@@ -20,7 +20,7 @@ var sequelize = new Sequelize(process.env.PGURI || config.PGURI, {
 });
 
 router.use(session({
-    secret: config.sessionSecret,
+    secret: process.env.session_secret || config.sessionSecret,
     store: new SequelizeStore({
         db: sequelize
     }),
