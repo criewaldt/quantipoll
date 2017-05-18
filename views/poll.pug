@@ -11,17 +11,17 @@ html(lang="en")
             h1 Poll #
                 span= poll.id
             p Created by: 
-                a(href="")= poll.userid
+                a(href="../../user/handle/"+poll.handle)= poll.handle
         .container
             .row
-                .col-sm-10.col-md-offset-1
+                .col-sm-12
                     h3 Question
                     .well.text-center
                         h4
                             strong= poll.question
                 br
             .row
-                .col-sm-10.col-md-offset-1
+                .col-sm-12
                     h3 Answer Options
                     .col-sm-12
                         each answer in poll.answers
@@ -29,15 +29,16 @@ html(lang="en")
                                 .col-sm-6.text-center
                                     h4
                                         strong= answer
-                                .col-sm-6.text-center    
+                                .col-sm-6.text-center 
                                     button(class="btn btn-info" id=answer type="button") Cast vote
-                                
-            .row.text-center
-                .col-sm-6
-                    h3
-                        a(href="/polls") View the Polls
-                    p View and vote on recent polls
-                .col-sm-6
-                    h3
-                        a(href="/me") Vote History
-                    p View your vote history
+            //vote results
+            if vote
+                .row
+                    .col-sm-12
+                        h3 Results
+                        .col-sm-12
+                            p= vote.count
+                            each v in vote.votes
+                                p= v.vote
+                                p= v.handle
+            

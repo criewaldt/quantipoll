@@ -1,20 +1,15 @@
 <script>
     
 function savePoll(payload, callback) {
-       
        $.ajax({
         type: "POST",
-        url: 'https://quantipoll.herokuapp.com/polls/save',
+        url: 'http://localhost:3000/polls/create',
         data: payload,
-        success: function(data){
-                     callback(data);
-                 }
-      });
-       
-    
-    
-    
-    
+        success: function(response) {
+              // similar behavior as an HTTP redirect
+              window.location.href = "/polls/id/"+response.id;
+        }
+      });   
 }  
     
     var app = angular.module('createPollAnswers', []);
@@ -58,8 +53,8 @@ function savePoll(payload, callback) {
               myPoll.isanon = document.getElementsByName('isanon')[0].checked;
               
               savePoll(myPoll, function(result){
-                console.log("https://www.quantipoll.com/polls/"+result.link);
-                       window.location.replace("https://quantipoll.herokuapp.com/polls/"+result.link);
+                     console.log(result);
+                  
                 });
             } else {
               //

@@ -1,53 +1,50 @@
 var express = require('express'),
   router = express.Router(),
-  Vote = require('../models/index').Vote,
-  User = require('../models/index').User,
-  passport = require('../middlewares/google').passport,
-  restricted = require('../middlewares/google').restricted;
+  restricted = require('../middlewares/auth').restricted,
+  session = require('express-session'),
+  pg = require('pg');
+  pgSession = require('connect-pg-simple')(session);
 
-router.use('/api/poll', require('./api/polls'));
-router.use('/api/vote', require('./api/votes'));
-
-router.use('/polls', require('./polls'));
-
+pg.defaults.ssl = true;
 var log = function(inst) {
     console.dir(inst.get());
 };
 
-//Google OAuth2 -->
-router.get('/auth/google',
-    passport.authenticate('google', { scope: ['email'] }));
+try {
+    var config = require('../local/config.js');
+} catch (err) {
+    console.log(err);
+    var config = {};
+}
 
-router.get('/auth/google/callback', 
-    passport.authenticate('google', { failureRedirect: '/' }),
-    function(req, res) {
-      // Successful authentication, redirect home.
-        res.redirect('/restricted');
-    }
-);
-// -->
+
+
+// Use the session middleware
+router.use('/', require('../middlewares/session').router);
+//google0auth2 middleware
+router.use('/', require('../middlewares/auth').router);
+
+//user controllers
+router.use('/user', require('./user/user'));
+router.use('/polls', require('./poll/poll'));
+router.use('/vote', require('./vote/vote'));
+
+// TEST view
+router.get('/test/:template', function(req, res) {
+    res.render(req.params.template);
+});
 
 // index view
 router.get('/', function(req, res) {
-  res.render('index');
+  if (!req.user) {
+     res.render('index');
+  } else {
+    res.render('index', {user:req.user});
+  }
 });
 
 
-// restricted view
-router.get('/restricted', restricted, function(req, res) {
-    res.send(req.user);
-});
 
-router.get('/votes', function(req, res) {
-    Vote.findAll({
-        where: {userid: 'chrisr'}
-    })
-        .then(function(users) {
-            users.forEach(log);
-            res.send(users);
-        });
-    
-});
 
 // 404 for any page that doesnt exist - This goes after all other views
 router.get('*', function(req, res){

@@ -1,4 +1,4 @@
-//polls.js
+//dashboard.js
 $(document).ready(function() {
    //
 });

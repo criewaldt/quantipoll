@@ -1,0 +1,78 @@
+html(lang="en")
+    head
+        title Welcome To QuantiPoll
+        meta(charset="utf-8")
+        meta(name="viewport" content="width=device-width, initial-scale=1")
+        link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css")
+        script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js")
+        script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js")
+        
+        //angular
+        script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js")
+        //bootstrap toggle
+        link(href='https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css', rel='stylesheet')
+        script(src='https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js')
+    body
+        .jumbotron.text-center
+            h1 My QuantiPoll 
+        .container
+            .row.container-fluid
+                .col-sm-4.text-center
+                    h4
+                        strong My Handle:
+                        |  #{user.handle}
+                .col-sm-4.text-center
+                    h4
+                        strong Logged in as 
+                        |  #{user.userid}
+                .col-sm-4.text-center
+                    h4
+                        strong Created:
+                        |  #{user.createdAt}
+            .row.text-center
+                .col-sm-4
+                    h3
+                        a(href="/polls") View the Polls
+                    p View, create, and vote on polls here.
+                .col-sm-4
+                    h3
+                        a(href="/polls") Your History
+                    p View your voting and polling history here.
+                .col-sm-4
+                    h3
+                        a(href='#myModal', role='button', data-toggle='modal') Change Handle
+                    p Want a new name? Click here.
+                    // Modal HTML
+                    #myModal.modal.fade
+                        .modal-dialog
+                            .modal-content
+                                form(method="post" action="./dashboard")
+                                    .modal-header
+                                        h4#exampleModalLabel.modal-title Choose a handle for QuantiPoll
+                                            button.close(type='button', data-dismiss='modal', aria-label='Close')
+                                                span(aria-hidden='true') X
+                                    .modal-body
+                                        .row.container-fluid
+                                            .col-sm-12
+                                                .form-group
+                                                    
+                                                    p Your current handle is:
+                                                        strong  #{user.handle}
+                                                    small(style="color:blue;") Remember: this will be public
+                                                    
+                                                    br
+                                                    br
+                                                    .row
+                                                        if msg
+                                                            script.
+                                                                $('#myModal').modal('show');
+                                                            .alert.alert-warning
+                                                                strong Oops! 
+                                                                |  #{msg}
+                                                        input#nU.form-control(name="handle" type='text' value=user.handle placeholder=user.handle)
+        
+                                    .modal-footer
+                                        button.btn.btn-secondary(type='button', data-dismiss='modal') Cancel
+                                        button.btn.btn-info(type='submit') Update Handle
+        //dashboard js
+        script(src="js/dashboard.js")    

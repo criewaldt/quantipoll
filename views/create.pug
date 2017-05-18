@@ -21,8 +21,8 @@ html(lang="en")
             .container
                 .row.container-fluid
                     .col-sm-12
-                        p Poll ID: #{poll.id} created by: 
-                            a(href="/user/"+poll.userid)= poll.userid
+                        p Poll ID: #{poll.id+1} created by: 
+                            a(href="/user/handle/"+poll.handle) #{poll.handle}
                         
                 .row
                     .col-sm-10.col-md-offset-1

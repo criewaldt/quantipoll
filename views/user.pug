@@ -1,0 +1,30 @@
+html(lang="en")
+    head
+        title Welcome To QuantiPoll
+        meta(charset="utf-8")
+        meta(name="viewport" content="width=device-width, initial-scale=1")
+        link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css")
+        script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js")
+        script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js")
+        
+        //angular
+        script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js")
+        //bootstrap toggle
+        link(href='https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css', rel='stylesheet')
+        script(src='https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js')
+    body
+        .jumbotron.text-center
+            h1 User Profile 
+        .container
+            .row.container
+                .col-sm-12.text-center
+                    h2
+                        strong #{user.handle}
+                    h4 Created: #{user.createdAt}
+            .row.container
+                .col-sm-12.text-center
+                    h1 Poll History Here
+            .row.container
+                .col-sm-12.text-center
+                    h1 Vote History Here
+            
