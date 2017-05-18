@@ -18,8 +18,8 @@ router.use(passport.session());
 
 passport.use(new GoogleStrategy({
     realm: process.env.google_realm || config.passport.google.realm.local,
-    clientID: process.env.GOOGLE_CONSUMER_KEY || config.passport.google.clientID,
-    clientSecret: process.env.GOOGLE_CONSUMER_SECRET || config.passport.google.clientSecret,
+    clientID: process.env.google_key || config.passport.google.clientID,
+    clientSecret: process.env.google_secret || config.passport.google.clientSecret,
     callbackURL: process.env.google_callbackURL || config.passport.google.callbackURL.local,
   },
     function(token, tokenSecret, profile, done) {

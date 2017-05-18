@@ -44,8 +44,8 @@ function countVotes(pollID, callback) {
        where: {pollid: pollID}
         })
     .then(result => {
-      console.log(result.count);
-      console.log(result.rows);
+      //console.log(result.count);
+      //console.log(result.rows);
       callback(result);
     });
 }
@@ -86,10 +86,13 @@ router.get('/test/:pollid', function(req, res) {
     getPollByID(req.params.pollid, function(poll){
         countVotes(poll.id, function(result){
             var vote = {
+                answers: poll.answers,
                 count: result.count,
                 votes: result.rows
             };
-            res.render('poll', {poll:poll, vote:vote});
+            console.log(poll.answers);
+            
+            res.render('poll', {poll:poll, vote:vote, answers:poll.answers});
         });
     });
 });

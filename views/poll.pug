@@ -6,6 +6,13 @@ html(lang="en")
         link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css")
         script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js")
         script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js")
+        
+        //charts
+        script(src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.bundle.min.js")
+        script(src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js")
+        
+        
+        
     body
         .jumbotron.text-center
             h1 Poll #
@@ -20,25 +27,41 @@ html(lang="en")
                         h4
                             strong= poll.question
                 br
-            .row
-                .col-sm-12
-                    h3 Answer Options
-                    .col-sm-12
-                        each answer in poll.answers
-                            .row.well
-                                .col-sm-6.text-center
-                                    h4
-                                        strong= answer
-                                .col-sm-6.text-center 
-                                    button(class="btn btn-info" id=answer type="button") Cast vote
+            
             //vote results
             if vote
+                .row.container
+                    each answer, index in poll.answers
+                        .col-sm-2.text-center.well
+                            strong #{index}:
+                            |  #{answer}
+                .row
+                    
+                    .col-sm-4
+                        h3 Results
+                        p Total Votes: 
+                            strong #{vote.count}
+                        each v in vote.votes
+                            p
+                                a(href="/user/handle/"+v.handle)= v.handle
+                                |  voted for: (
+                                strong #{v.vote}
+                                | )
+                                i  #{answers[v.vote]}
+                    h3 Graphs and shit
+                    .col-sm-8
+                        canvas(id="myChart" width="400" height="200")
+            else
                 .row
                     .col-sm-12
-                        h3 Results
+                        h3 Answer Options
                         .col-sm-12
-                            p= vote.count
-                            each v in vote.votes
-                                p= v.vote
-                                p= v.handle
-            
+                            each answer in poll.answers
+                                .row.well
+                                    .col-sm-6.text-center
+                                        h4
+                                            strong= answer
+                                    .col-sm-6.text-center 
+                                        button(class="btn btn-info" id=answer type="button") Cast vote
+                                    
+            script(src="../../js/votes.js", type="text/javascript")
