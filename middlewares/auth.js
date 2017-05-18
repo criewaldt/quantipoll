@@ -9,7 +9,7 @@ var express = require('express'),
 try {
     var config = require('../local/config.js');
 } catch (err) {
-    console.log(err);
+    //console.log(err);
     var config = {};
 }
 
