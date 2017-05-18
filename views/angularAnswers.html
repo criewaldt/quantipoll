@@ -8,8 +8,10 @@ function savePoll(payload, callback) {
         success: function(response) {
               // similar behavior as an HTTP redirect
               window.location.href = "/polls/id/"+response.id;
+              callback(response);
         }
-      });   
+      });
+       
 }  
     
     var app = angular.module('createPollAnswers', []);
