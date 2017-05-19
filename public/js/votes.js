@@ -12,7 +12,7 @@ function quantipoll() {
         pollData.push(analytics.quantipoll[key].count);
     }
     
-    var ctx = document.getElementById("myChart");
+    var ctx = document.getElementById("QuantiPoll");
     var data = {
         labels: labels,
         datasets: [

@@ -105,6 +105,7 @@ router.get('/t/:pollid', function(req, res){
         res.render('poll', {
             poll : poll,
             voted: true,
+            votes: results,
             analytics : {
                 quantipoll : data}}); 
         });

@@ -42,7 +42,7 @@ function getPollAndVotes(pollID, callback) {
             .then(result => {
                 if (poll && result) {
                     //callback
-                    callback(poll.dataValues, result.rows); 
+                    callback(poll.dataValues, [result.count, result.rows]); 
                 }  
             });
     });
@@ -59,15 +59,46 @@ function quantipoll(pollID, callback) {
                 count: 0,
                 color: colors[parseInt(key, 10)-1]
             }};
-        //count votes
-        results.forEach(function(result){
+        //count votes per answer
+        results[1].forEach(function(result){
             //count vote
             payload[result.vote].count ++;
         });
         //callback results
         callback(poll, results, payload);
+        
     });
+    /*
+    poll = {
+        id:id,
+        question:question,
+        answers : {index:answer,},
+        userid : userid,
+        handle : handle,
+        createdAt: date,
+        updatedAt: date
+        };
+    results = [
+            {
+                id,
+                pollid: pollid
+                handle: handle
+                userid: userid
+                vote: vote
+                createdAt: date
+                updatedAt: date
+            }, ...
+        ];
+    payload = {
+            {1: {
+                count:count,
+                color: color},
+                },
+            }, ...
+        };
+    */
 }
+
 
 module.exports = {
     quantipoll:quantipoll

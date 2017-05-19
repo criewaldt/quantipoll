@@ -30,26 +30,27 @@ html(lang="en")
             
             //vote results
             if voted
-                .row.container
-                    each answer, index in poll.answers
-                        .col-sm-2.text-center.well
-                            strong #{index}:
-                            |  #{answer}
-                .row
-                    .col-sm-4
-                        h3 Results
-                        p Total Votes: 
-                        each v, index in analytics.quantipoll
-                            p= v
-                            p
-                                a(href="/user/handle/"+v.handle)= v.handle
-                                |  voted for: (
-                                strong #{v.vote}
-                                | )
-                                i  #{poll.answers[v]}
-                    h3 Vote Distribution By Answer
-                    .col-sm-3
-                        canvas(id="myChart")
+                .container-fluid
+                    .row
+                        each answer, index in poll.answers
+                            .col-sm-2.text-center.well
+                                strong #{index}:
+                                |  #{answer}
+                    .row
+                        .col-sm-6
+                            h3 Results
+                            p Total Votes: #{votes[0]}
+                            each v, index in votes[1]
+                                p
+                                    a(href="/user/handle/"+v.handle)= v.handle
+                                    |  voted for: (
+                                    strong #{v.vote}
+                                    | )
+                                    i  #{poll.answers[v.vote]}
+                            
+                        .col-sm-4.text-center
+                            h3 Vote Distribution
+                            canvas(id="QuantiPoll")
             else
                 .row
                     .col-sm-12
