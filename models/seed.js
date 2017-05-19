@@ -21,11 +21,11 @@ User.sync({force:true}).then(function() {
     handle: "Anonymous",
     },
     {
-    userid: "criewaldt@gmail.com",
+    userid: "criewaldt@test.com",
     handle: "ChrisR",
     },
     {
-    userid: "advertapibot@gmail.com",
+    userid: "advertapibot@test.com",
     handle: "AdvertAPIBot",
     }];
   
@@ -91,12 +91,12 @@ Poll.sync({force:true}).then(function() {
 Vote.sync({force:true}).then(function() {
   var data = [{
       pollid: "1",
-      userid: "criewaldt@gmail.com",
-      handle: "ChrisR",
+      userid: "criewaldt@test.com",
+      handle: "ChrisRRR",
       vote: "1"
       },{
       pollid: "2",
-      userid: "criewaldt@gmail.com",
+      userid: "criewaldt@test.com",
       handle: "ChrisR",
       vote: "2"
       },{

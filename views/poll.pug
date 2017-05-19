@@ -29,28 +29,27 @@ html(lang="en")
                 br
             
             //vote results
-            if vote
+            if voted
                 .row.container
                     each answer, index in poll.answers
                         .col-sm-2.text-center.well
                             strong #{index}:
                             |  #{answer}
                 .row
-                    
                     .col-sm-4
                         h3 Results
                         p Total Votes: 
-                            strong #{vote.count}
-                        each v in vote.votes
+                        each v, index in analytics.quantipoll
+                            p= v
                             p
                                 a(href="/user/handle/"+v.handle)= v.handle
                                 |  voted for: (
                                 strong #{v.vote}
                                 | )
-                                i  #{answers[v.vote]}
-                    h3 Graphs and shit
-                    .col-sm-8
-                        canvas(id="myChart" width="400" height="200")
+                                i  #{poll.answers[v]}
+                    h3 Vote Distribution By Answer
+                    .col-sm-3
+                        canvas(id="myChart")
             else
                 .row
                     .col-sm-12
@@ -63,5 +62,6 @@ html(lang="en")
                                             strong= answer
                                     .col-sm-6.text-center 
                                         button(class="btn btn-info" id=answer type="button") Cast vote
-                                    
+            script.
+                var analytics =!{JSON.stringify(analytics)};                        
             script(src="../../js/votes.js", type="text/javascript")

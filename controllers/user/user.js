@@ -70,6 +70,7 @@ router.get('/dashboard', restricted, function(req, res) {
         if (result === null) {
             res.send('User not found!');
         } else {
+            console.log(result);
             res.render('dashboard', {user:result});
         }
     });

@@ -25,7 +25,6 @@ passport.use(new GoogleStrategy({
     function(token, tokenSecret, profile, done) {
         process.nextTick(function() {
             //DO SOMETHING WITH GOOGLE PROFILE INFO
-            //console.log(profile);
             User
             .findOrCreate({
                 where: {

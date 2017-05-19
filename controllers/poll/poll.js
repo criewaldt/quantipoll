@@ -1,7 +1,9 @@
 var express = require('express'),
     router = express.Router(),
     modules = require('../../models/index'),
-    restricted = require('../../middlewares/auth').restricted;
+    restricted = require('../../middlewares/auth').restricted,
+    //polls
+    quantipoll = require('../../middlewares/charts').quantipoll;
 
 var Poll = modules.Poll;
 var User = modules.User;
@@ -61,6 +63,34 @@ function getAllPolls(callback) {
     });
 }
 
+function getPollAndVotes(pollID, callback) {
+    Poll.findOne({
+            where: {id: pollID}
+    }).then(poll => {
+        Vote.findAndCountAll({
+                where: {pollid: pollID}
+                })
+            .then(result => {
+                //console.log(result.count);
+                //console.log(result.rows);
+                //
+                if (poll && result) {
+                    //do something
+                    //console.log(poll);
+                    //console.log(result);
+                    
+                    //result.rows[0].dataValues.handle
+                    //console.log(poll)
+                    
+                    callback(poll, result); 
+                    
+                }  
+            });
+    });
+}
+
+
+
 //GET all polls
 router.get('/', function(req, res) {
     //do something
@@ -68,6 +98,16 @@ router.get('/', function(req, res) {
         res.render('polls', {polls:polls});
     });
     
+});
+
+router.get('/t/:pollid', function(req, res){
+    quantipoll(req.params.pollid, function(poll, results, data){
+        res.render('poll', {
+            poll : poll,
+            voted: true,
+            analytics : {
+                quantipoll : data}}); 
+        });
 });
 
 //GET all polls
@@ -101,31 +141,7 @@ router.get('/test/:pollid', function(req, res) {
 //GET poll by id
 router.get('/id/:pollid', function(req, res) {
     //do something
-    getPollByID(req.params.pollid, function(poll){
-        if (poll !== null) {
-            //handle found => result
-            //Check if voted
-            if (req.user) {
-                didIVote(req.params.pollid, req.user.email, function(result) {
-                    if (result) {
-                        // already voted
-                        countVotes(req.params.pollid, function(vote){
-                                res.render('poll', {poll:poll, vote:vote});
-                            });
-                    } else {
-                        //not voted yet
-                        res.render('poll', {poll:poll});
-                    }
-                });
-            } else {
-                res.render('poll', {poll:poll});
-            }
-            
-        } else {
-            //handle entry not found
-            res.send('Poll not found!');
-        }
-    });
+    
     
 });
 
