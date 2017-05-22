@@ -30,8 +30,8 @@ router.use('/polls', require('./poll/poll'));
 router.use('/vote', require('./vote/vote'));
 
 // TEST view
-router.get('/test/:template', function(req, res) {
-    res.render(req.params.template);
+router.get('/test', function(req, res) {
+    res.render('test');
 });
 
 // index view
@@ -43,6 +43,10 @@ router.get('/', function(req, res) {
   }
 });
 
+
+router.get('/oops', function(req, res) {
+    res.render('oops', {msg:'Oh no!'});
+});
 
 
 

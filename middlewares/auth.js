@@ -25,17 +25,23 @@ passport.use(new GoogleStrategy({
     function(token, tokenSecret, profile, done) {
         process.nextTick(function() {
             //DO SOMETHING WITH GOOGLE PROFILE INFO
+            var handle =  profile.displayName;
+            if (profile.displayName.length <= 1) {
+                handle = profile.emails[0].value.substring(0, profile.emails[0].value.lastIndexOf("@"));
+            }
             User
             .findOrCreate({
                 where: {
                     userid: profile.emails[0].value
                 },
                 defaults: {
-                    handle: profile.displayName,
-                    googledata: profile
+                    googledata: profile,
+                    handle: handle
                 }
             })
             .spread((user, created) => {
+           
+                //console.log(profile);
                 /*
                 console.log('*********');
                 console.log(profile);
@@ -69,10 +75,20 @@ router.get('/auth/google',
     passport.authenticate('google', { scope: ['email'] }));
 
 router.get('/auth/google/callback', 
-    passport.authenticate('google', { failureRedirect: '/login' }),
+    passport.authenticate('google', { failureRedirect: '/'}),
     function(req, res) {
       // Successful authentication, redirect home.
-        res.redirect('/');
+        res.render('index', {user:req.user});
+});
+
+//custom redirect
+router.get('/redirect', function(req, res){
+    req.logIn(req.user, function(error) {
+        if (!error) {
+            // this is to refresh user session on auth redirect
+            res.redirect('/');
+        }
+    });
 });
 
 router.get('/restricted', restricted, function(req, res){
@@ -90,7 +106,7 @@ function restricted(req, res, next) {
     if (req.isAuthenticated()) {
         next();
     } else {
-        res.redirect('/');
+        res.redirect('/auth/google');
     }
 }
 

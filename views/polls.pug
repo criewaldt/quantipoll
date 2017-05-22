@@ -14,15 +14,35 @@ html(lang="en")
             h1 Polls
             p View and vote on polls, or create your own.
         .container
+            .row
+                if user
+                    //logged in
+                    .row.text-center
+                        .col-sm-4
+                            h3
+                                a(href='/user/dashboard') Dashboard
+                            p View your history, change your handle, and more.
+                        .col-sm-4
+                            a.btn.btn-primary.btn-lg(href="/polls/create") Create a poll
+                        .col-sm-4
+                            h3
+                                a(href="/logout") Logout
+                            p Get outta here.
+                else
+                    //not logged in
+                    .row.text-center
+                        .col-sm-6
+                            h3
+                                a(href="/") Home
+                        .col-sm-6
+                            h3
+                                a(href="/auth/google") Login
+                            p Login using your Google account.
+
+        .container
             .row.text-left
-                .col-sm-6.text-center
-                    div(class="input-group")
-                        input(type="text" class="form-control" disabled="disabled" placeholder="Search by keyword...")
-                        span(class="input-group-btn")
-                            button(class="btn btn-default" disabled="disabled" type="button") Go
-                br
-                .col-sm-6.text-center
-                    a.btn.btn-primary.btn-lg(href="/polls/create") Create a poll
+                
+                
             .row.text-center
                 h2 Recent Polls
             each poll in polls

@@ -12,7 +12,7 @@ html(lang="en")
         script(src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js")
         
         
-        
+          
     body
         .jumbotron.text-center
             h1 Poll #
@@ -20,6 +20,7 @@ html(lang="en")
             p Created by: 
                 a(href="../../user/handle/"+poll.handle)= poll.handle
         .container
+            include nav
             .row
                 .col-sm-12
                     h3 Question
@@ -32,10 +33,12 @@ html(lang="en")
             if voted
                 .container-fluid
                     .row
-                        each answer, index in poll.answers
-                            .col-sm-2.text-center.well
+                        h3 Answer Options
+                        .col-sm-12.text-center.well
+                            each answer, index in poll.answers    
                                 strong #{index}:
                                 |  #{answer}
+                                br
                     .row
                         .col-sm-6
                             h3 Results
@@ -47,22 +50,24 @@ html(lang="en")
                                     strong #{v.vote}
                                     | )
                                     i  #{poll.answers[v.vote]}
-                            
-                        .col-sm-4.text-center
+                        .col-sm-6.text-center
                             h3 Vote Distribution
                             canvas(id="QuantiPoll")
             else
                 .row
+                    input(type='hidden', name="pollid", value=poll.id)
                     .col-sm-12
                         h3 Answer Options
                         .col-sm-12
-                            each answer in poll.answers
+                            each answer, index in poll.answers
                                 .row.well
                                     .col-sm-6.text-center
                                         h4
                                             strong= answer
-                                    .col-sm-6.text-center 
-                                        button(class="btn btn-info" id=answer type="button") Cast vote
+                                    .col-sm-6.text-center
+                                        input(type='hidden', name="vote", value=index)
+                                        button.btn.btn-info(type="button") Cast Vote
+                                        br                    
             script.
-                var analytics =!{JSON.stringify(analytics)};                        
+                var analytics =!{JSON.stringify(quantipoll)};  
             script(src="../../js/votes.js", type="text/javascript")

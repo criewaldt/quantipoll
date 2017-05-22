@@ -1,7 +1,7 @@
 function savePoll(payload, callback) {
        $.ajax({
         type: "POST",
-        url: 'https://quantipoll.herokuapp.com/polls/create',
+        url: '/polls/create',
         data: payload,
         success: function(response) {
               // similar behavior as an HTTP redirect
@@ -48,6 +48,9 @@ app.controller('myAnswers', function($scope) {
                   var i = (index+1).toString();
                   myPoll.answers[i] = item.answer;
               });
+          
+          
+          
           myPoll.question = $scope.myQuestion;
           
           myPoll.isanon = document.getElementsByName('isanon')[0].checked;

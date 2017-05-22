@@ -1,0 +1,26 @@
+//logged in
+if user
+    .row.text-center
+        .col-sm-4
+            h3
+                a(href="/polls") View the Polls
+            p View, create, and vote on polls here.
+        .col-sm-4
+            h3
+                a(href='/user/dashboard') Dashboard
+            p View your history, change your handle, and more.
+        .col-sm-4
+            h3
+                a(href="/logout") Logout
+            p Get outta here.
+else
+//not logged in
+    .row.text-center
+        .col-sm-6
+            h3
+                a(href="/polls") View the Polls
+            p View, create, and vote on polls here.
+        .col-sm-6
+            h3
+                a(href="/auth/google") Login
+            p Login using your Google account.

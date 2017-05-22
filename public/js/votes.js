@@ -1,16 +1,14 @@
-//votes.js
-
-
 function quantipoll() {
-    var labels = [];
-    var colors = [];
-    var pollData = [];
+    var labels = [],
+        colors = [],
+        pollData = [];
     
-    for (var key in analytics.quantipoll) {
+    for (var key in analytics) {
         labels.push(key);
-        colors.push(analytics.quantipoll[key].color);
-        pollData.push(analytics.quantipoll[key].count);
+        colors.push(analytics[key].color);
+        pollData.push(analytics[key].count);
     }
+    
     
     var ctx = document.getElementById("QuantiPoll");
     var data = {
@@ -21,7 +19,7 @@ function quantipoll() {
                 backgroundColor: colors
             }],
         options: {
-                        maintainAspectRatio: false,
+                        maintainAspectRatio: true,
                     }
     };
     
@@ -31,4 +29,29 @@ function quantipoll() {
         data: data});
 }
 
-quantipoll();
+$(document).ready(function(){
+    //quantipoll    
+    try {quantipoll();}
+    catch (err) {console.log(err);}
+    
+    $('button').on('click', function(){
+        
+        var data = {
+            pollid: $( "input[name=pollid]" ).val(),
+            vote: $(this).prev('input').attr('value')
+        };
+
+        $.post( "/vote/cast", data, function() {
+                //do something
+            })
+        .done(function(data) {
+              window.location.href = data.link;
+            })
+        .fail(function() {
+              alert('You must be logged in to vote!');
+              window.location.href = "http://localhost:3000/auth/google";
+        });
+        
+    });
+});
+

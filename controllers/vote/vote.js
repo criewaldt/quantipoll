@@ -5,67 +5,56 @@ var express = require('express'),
     Vote = require('../../models/index').Vote,
     restricted = require('../../middlewares/auth').restricted;
 
-            
-function getPollByID(pollID, callback) {
-    //do something
-    Poll.findOne({
-            where: {id: pollID}
-    }).then(poll => {
-        callback(poll);
-    });
-}
-
-function getVoteByPollID(pollID, callback) {
-    //do something
-    Vote.findOne({
-            where: {pollid: pollID}
-    }).then(vote => {
-        if (vote) {
-            callback(vote);
-        } else {
-            callback(null);
-        }
-    });
-}
 
 function castVote(voteData, callback) {
-    Vote.create(voteData)
-      .then(function(vote) {
-        callback(vote.get());
-    }).catch(function (err) {
-        // handle error;
-        console.log(err);
-    });
+    Vote
+        .findOrCreate({
+            where: {
+                userid : voteData.userid,
+                pollid : voteData.pollid,
+                vote : parseInt(voteData.vote, 10)
+                },
+            defaults: {
+                handle : voteData.handle
+                }
+        })
+        .spread((vote, created) => {
+            console.log(vote.get({
+                plain: true
+            }));
+            if (created) {
+                callback(vote.get());
+            } else {
+                //Do nothing
+                callback(null);
+            }
+
+        });
 }
 
 
 //POST cast vote
 router.post('/cast', restricted, function(req, res) {
+    console.log('cast triggered');
     var data = {
-        pollid: req.body.pollid,
-        vote: parseInt(req.body.vote, 10),
+        pollid: parseInt(req.body.pollid, 10),
+        vote: req.body.vote,
         userid: req.user.email, //req.user.email
         handle: req.user.handle //req.user.handle
     };
-    //IF POLL EXISTS
-    getPollByID(data.pollid, function(result){
-        if (result.id != "undefined"){
-            //IF NOT ALREADY VOTED
-            getVoteByPollID(data.pollid, function(findVote) {
-                    if (findVote === null) {
-                        // CAST VOTE  
-                        castVote(data, function(voteResult){
-                            console.log(voteResult);
-                        });
-                    } else {
-                        //ALREADY VOTED FOR THIS POLLID
-                        console.log('already voted');
-                    }
-                });
+    
+    console.log(data);
+    
+    // CAST VOTE  
+    castVote(data, function(voteResult){
+        if (voteResult === null) {
+            res.send('there was an error voting...');
+            res.status(401);
         } else {
-            res.send('invalid vote');
+            res.json({link:"http://localhost:3000/polls/id/"+voteResult.pollid.toString()}); 
         }
     });
+   
 });
 
 module.exports = router;

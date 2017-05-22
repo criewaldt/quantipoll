@@ -55,7 +55,7 @@ router.get('/handle/:handle', restricted, function(req, res) {
             res.render('user', {user:result});
         } else {
             //handle entry not found
-            res.send('Handle not found!');
+            res.render('oops', {msg:'Handle not found. The person you are looking for probably changed their handle.'});
         }
     });
 });
@@ -65,10 +65,9 @@ router.get('/handle/:handle', restricted, function(req, res) {
 //takes User model findOne result:
 //  {user:result}
 router.get('/dashboard', restricted, function(req, res) {
-    console.log(req.user.email);
     getUserByID(req.user.email, function(result) {
         if (result === null) {
-            res.send('User not found!');
+            res.render('oops', {msg:'User session error. The person you are looking for probably deleted their record.'});
         } else {
             console.log(result);
             res.render('dashboard', {user:result});

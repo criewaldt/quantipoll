@@ -9,59 +9,26 @@ var Poll = modules.Poll;
 var User = modules.User;
 var Vote = modules.Vote;
 
-function getPollByID(pollID, callback) {
-    //do something
-    Poll.findOne({
-            where: {id: pollID}
-    }).then(poll => {
-        callback(poll);
-    });
+//shuffle the answer array to mix order of answers on voting page
+function shuffle(array) {
+  var currentIndex = array.length, temporaryValue, randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
 }
 
-function _getAllPolls(callback) {
-    //do something
-    Poll.findAll().then(polls => {
-        callback(polls);
-    });
-}
-
-function didIVote(pollID, email, callback) {
-    //do something
-    Vote.findOne({
-            where: {
-                pollid: pollID,
-                userid: email}
-    }).then(vote => {
-        if (vote) {
-            callback(vote);
-        } else {
-            callback(null);
-        }
-    });
-}
-
-function countVotes(pollID, callback) {
-    Vote
-    .findAndCountAll({
-       where: {pollid: pollID}
-        })
-    .then(result => {
-      //console.log(result.count);
-      //console.log(result.rows);
-      callback(result);
-    });
-}
-
-function getAllPolls(callback) {
-    //do something
-    Poll.findAll({
-        order: [['"createdAt"', "DESC"]],
-        where:{
-            question:{
-                $ne: null}}}).then(polls => {
-        callback(polls);
-    });
-}
 
 function getPollAndVotes(pollID, callback) {
     Poll.findOne({
@@ -91,85 +58,85 @@ function getPollAndVotes(pollID, callback) {
 
 
 
+//// GET POLL
+
+function getPollByID(pollID, callback) {
+    //do something
+    Poll.findOne({
+            where: {id: pollID}
+    }).then(poll => {
+        callback(poll);
+    });
+}
+
+function getAllPolls(callback) {
+    //do something
+    Poll.findAll({
+        order: [['"updatedAt"', "DESC"]],
+        where:{
+            question:{
+                $ne: null}}}).then(polls => {
+        callback(polls);
+    });
+}
+
 //GET all polls
 router.get('/', function(req, res) {
     //do something
     getAllPolls(function(polls){
-        res.render('polls', {polls:polls});
-    });
-    
-});
-
-router.get('/t/:pollid', function(req, res){
-    quantipoll(req.params.pollid, function(poll, results, data){
-        res.render('poll', {
-            poll : poll,
-            voted: true,
-            votes: results,
-            analytics : {
-                quantipoll : data}}); 
-        });
-});
-
-//GET all polls
-//// MUST DELETE
-////////
-router.get('/_', function(req, res) {
-    //do something
-    _getAllPolls(function(polls){
-        res.render('polls', {polls:polls});
-    });
-    
-});
-
-router.get('/test/:pollid', function(req, res) {
-    //test voting view
-    getPollByID(req.params.pollid, function(poll){
-        countVotes(poll.id, function(result){
-            var vote = {
-                answers: poll.answers,
-                count: result.count,
-                votes: result.rows
-            };
-            console.log(poll.answers);
-            
-            res.render('poll', {poll:poll, vote:vote, answers:poll.answers});
-        });
+        if (!req.user) {
+            res.render('polls', {polls:polls});
+        } else {
+            res.render('polls', {polls:polls, user:req.user});
+        }
     });
 });
-//////////////
 
-//GET poll by id
-router.get('/id/:pollid', function(req, res) {
-    //do something
-    
-    
-});
-
-//
-////    RESTRICTED VIEWS
-//
-
-//shuffle the answer array to mix order of answers on voting page
-function shuffle(array) {
-  var currentIndex = array.length, temporaryValue, randomIndex;
-
-  // While there remain elements to shuffle...
-  while (0 !== currentIndex) {
-
-    // Pick a remaining element...
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex -= 1;
-
-    // And swap it with the current element.
-    temporaryValue = array[currentIndex];
-    array[currentIndex] = array[randomIndex];
-    array[randomIndex] = temporaryValue;
-  }
-
-  return array;
+function didIVote(pollid, email, cb) {
+    Vote.findOne({
+            where: {
+                pollid: pollid,
+                userid: email}
+    }).then(vote => {
+        if (vote) {
+            cb(true);
+        } else {
+            cb(false);
+        }
+    });
 }
 
+router.get('/id/:pollid', function(req, res) {
+    //if logged in
+    if (req.user) {
+        didIVote(req.params.pollid, req.user.email, function(iVoted){
+            //if you didnt vote
+            if (!iVoted) {
+                getPollByID(req.params.pollid, function(poll){
+                    res.render('poll', {poll:poll, user:req.user});
+                    //console.log(poll);
+                });
+            } else {
+                //I voted: send analytics
+                quantipoll(req.params.pollid, function(poll, results, data){
+                    res.render('poll', {
+                        poll : poll,
+                        user: req.user,
+                        voted: true,
+                        votes: results,
+                        quantipoll : data}); 
+                    });
+            }
+            });
+    //if not logged in
+    } else {
+        getPollByID(req.params.pollid, function(poll){
+            res.render('poll', {poll:poll});
+            });
+    }
+});
+
+//// CREATE POLL
 //this helper function creates a poll => poll
 function createPoll(userID, handle, callback) {
     var data = {
@@ -185,7 +152,6 @@ function createPoll(userID, handle, callback) {
         console.log(err);
     });
 }
-
 //this helper function deletes empty polls by userid
 function cleanUp(userID) {
     Poll.findAll({
@@ -199,12 +165,11 @@ function cleanUp(userID) {
             });
         });
 }
-
 //GET create new poll
 router.get('/create', restricted, function(req, res) {
     createPoll(req.user.email, req.user.handle, function(result){
         //new poll is ready to be edited
-        res.render('create', {poll:result});
+        res.render('create', {poll:result, user:req.user});
     });
 });
 
@@ -216,13 +181,13 @@ router.post('/create', restricted, function(req, res) {
     //shuffle answer order
     //this is avoid answer order favoritism
     var answers = {};
-    var counter = 0;
+    var counter = 1;
     var answerArray = shuffle(req.body.answers);
     answerArray.forEach(function(item){
             answers[counter] = item;
             counter ++;
         });
-    
+    console.log(answers);
     //make handle anonymous if asked to do so
     var author = 'Anonymous';
     if (req.body.isanon == "false") {
@@ -249,6 +214,8 @@ router.post('/create', restricted, function(req, res) {
             cleanUp(req.user.email);
             res.json({id:poll.get().id});
         });
+        
+////
 });
 
 module.exports = router;

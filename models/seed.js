@@ -9,30 +9,26 @@ Session.belongsTo(User);
 User.sync({force:true}).then(function() {
   var data = [{
     userid: "test1@test.com",
-    handle: "test1",
+    handle: "Test1",
     },{
     userid: "test2@test.com",
-    handle: "Anonymous",
+    handle: "Test2",
     },{
     userid: "test3@test.com",
-    handle: "test3",
+    handle: "Anonymous",
     },{
     userid: "test4@test.com",
-    handle: "Anonymous",
-    },
-    {
-    userid: "criewaldt@test.com",
-    handle: "ChrisR",
+    handle: "test4",
     },
     {
     userid: "advertapibot@test.com",
     handle: "AdvertAPIBot",
     }];
-  
+  /*
   User.bulkCreate(data).then(function(results) {
-    console.log(results);    
+    //console.log(results);    
   });
-  
+  */
 });
 
 Poll.sync({force:true}).then(function() {
@@ -82,52 +78,17 @@ Poll.sync({force:true}).then(function() {
       3: 'amswer3',
       4: 'amswer4'}
     }];
+  /*
   Poll.bulkCreate(data).then(function(results) {
-    console.log(results);    
+    //console.log(results);    
   });
-  
+  */
 });
 
 Vote.sync({force:true}).then(function() {
-  var data = [{
-      pollid: "1",
-      userid: "criewaldt@test.com",
-      handle: "ChrisRRR",
-      vote: "1"
-      },{
-      pollid: "2",
-      userid: "criewaldt@test.com",
-      handle: "ChrisR",
-      vote: "2"
-      },{
-      pollid: "1",
-      userid: "test@test.com",
-      handle: "Test",
-      vote: "1"
-      },{
-      pollid: "1",
-      userid: "test2@test.com",
-      handle: "Test2",
-      vote: "2"
-      },{
-        pollid: "1",
-      userid: "test3@test.com",
-      handle: "Test3",
-      vote: "3"
-      },{
-        pollid: "1",
-      userid: "test4@test.com",
-      handle: "Test4",
-      vote: "1"
-      }
-    ];
-  
-  Vote.bulkCreate(data).then(function(results) {
-    console.log(results);    
-  });
   
 });
   
-Session.sync().then(function() {
+Session.sync({force:true}).then(function() {
   //sync the db
 });

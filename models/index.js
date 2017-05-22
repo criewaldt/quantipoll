@@ -62,15 +62,14 @@ var User = sequelize.define('User', {
     primaryKey: true
   },
   handle: {
-    type: Sequelize.STRING,
-    allowNull: false,
+    type: Sequelize.STRING
   },
   googledata : {
     type: Sequelize.JSONB
   },
   phonedata: {
     type: Sequelize.JSONB
-  }
+  },
 });
 
 var Vote = sequelize.define('Vote', {

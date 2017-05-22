@@ -50,9 +50,10 @@ function getPollAndVotes(pollID, callback) {
 
 //Main vote distribution graph
 function quantipoll(pollID, callback) {
-    getPollAndVotes(pollID, function(poll, results){
+    getPollAndVotes(pollID, function(poll, votes){
         //Create payload with answers, and add colors
         var payload = {};
+        //console.log(poll.answers);
         for (var key in poll.answers) {
             //assign keys and colors to payload before counting votes
             payload[key] = {
@@ -60,12 +61,15 @@ function quantipoll(pollID, callback) {
                 color: colors[parseInt(key, 10)-1]
             }};
         //count votes per answer
-        results[1].forEach(function(result){
+        
+        votes[1].forEach(function(result){
             //count vote
             payload[result.vote].count ++;
         });
+        //console.log(payload);
         //callback results
-        callback(poll, results, payload);
+        callback(poll, votes, payload);
+        
         
     });
     /*
@@ -98,6 +102,7 @@ function quantipoll(pollID, callback) {
         };
     */
 }
+
 
 
 module.exports = {
