@@ -49,7 +49,7 @@ $(document).ready(function(){
             })
         .fail(function() {
               alert('You must be logged in to vote!');
-              window.location.href = "http://localhost:3000/auth/google";
+              window.location.href = "/auth/google";
         });
         
     });

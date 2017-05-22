@@ -51,7 +51,7 @@ router.post('/cast', restricted, function(req, res) {
             res.send('there was an error voting...');
             res.status(401);
         } else {
-            res.json({link:"http://localhost:3000/polls/id/"+voteResult.pollid.toString()}); 
+            res.json({link:"https://quantipoll.herokuapp.com/polls/id/"+voteResult.pollid.toString()}); 
         }
     });
    
