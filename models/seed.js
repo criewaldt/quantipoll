@@ -89,6 +89,6 @@ Vote.sync({force:true}).then(function() {
   
 });
   
-Session.sync({force:true}).then(function() {
+Session.sync().then(function() {
   //sync the db
 });

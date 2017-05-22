@@ -126,7 +126,7 @@ var Session = sequelize.define('Session', {
 User.sync().then(function() {
   //sync the db
 });
-Poll.sync().then(function() { // use {force:true} to drop table first
+Poll.sync({force:true}).then(function() { // use {force:true} to drop table first
   //sync the db
 });
 Vote.sync().then(function() {

@@ -20,7 +20,6 @@ html(lang="en")
             p Created by: 
                 a(href="../../user/handle/"+poll.handle)= poll.handle
         .container
-            include nav
             .row
                 .col-sm-12
                     h3 Question
@@ -71,3 +70,5 @@ html(lang="en")
             script.
                 var analytics =!{JSON.stringify(quantipoll)};  
             script(src="../../js/votes.js", type="text/javascript")
+            
+            include nav
