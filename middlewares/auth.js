@@ -70,12 +70,17 @@ passport.deserializeUser(function(obj, done) {
   done(null, obj);
 });
 
+function destroySesh(req, res, next) {
+    req.session.destroy();
+    next();
+}
+
 //Google OAuth2 -->
-router.get('/auth/google',
+router.get('/auth/google', destroySesh,
     passport.authenticate('google', { scope: ['email'] }));
 
 router.get('/auth/google/callback', 
-    passport.authenticate('google', { failureRedirect: '/'}),
+    passport.authenticate('google', { failureRedirect: '/auth/login'}),
     function(req, res) {
       // Successful authentication, redirect home.
         res.render('index', {user:req.user});
