@@ -22,15 +22,17 @@ var models = require('../models/index'),
 
 var colors = [
     "#9b59b6",
-    "#CC5D53",
     "#1abc9c",
-    "#003171",
     "#f39c12",
+    "#CC5D53",
+    
+    "#003171",
+    
     "#3498db",
     "#d35400",
     "#FF003B",
     "#A17917",
-    "#34495e",];
+    "#34495e"];
 
 function getPollAndVotes(pollID, callback) {
     Poll.findOne({
